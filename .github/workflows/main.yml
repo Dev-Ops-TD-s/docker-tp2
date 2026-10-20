@@ -36,9 +36,11 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
-          mvn -B verify sonar:sonar
+          mvn -B clean verify
+          org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.projectKey=Dev-Ops-TD-s_docker-tp2
           -Dsonar.organization=dev-ops-td-s
           -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.login=$SONAR_TOKEN
+          -Dsonar.token=$SONAR_TOKEN
+          -DskipTests
           --file ay-app/pom.xml
