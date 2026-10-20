@@ -1,4 +1,6 @@
-FROM ubuntu:latest
-LABEL authors="LENOVO"
+FROM eclipse-temurin:21-jre-alpine
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /app
+COPY Main.class .
+
+CMD ["java", "Main"]
