@@ -31,3 +31,14 @@ jobs:
 
       - name: Build backend
         run: mvn -B clean package -DskipTests --file ay-app/pom.xml
+
+      - name: SonarCloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+          mvn -B verify sonar:sonar
+          -Dsonar.projectKey=Dev-Ops-TD-s_docker-tp2
+          -Dsonar.organization=dev-ops-td-s
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.login=$SONAR_TOKEN
+          --file ay-app/pom.xml
