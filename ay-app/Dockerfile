@@ -1,19 +1,19 @@
-FROM eclipse-temurin:21-jdk-alpine AS build
+# Build stage
+FROM eclipse-temurin:21-jdk-alpine AS myapp-build
+ENV MYAPP_HOME=/opt/myapp
+WORKDIR $MYAPP_HOME
 
-WORKDIR /app
+RUN apk add --no-cache maven
 
-COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
+COPY pom.xml .
 COPY src ./src
+RUN mvn package -DskipTests
 
-RUN chmod +x mvnw
-RUN ./mvnw package -DskipTests
-
+# Run stage
 FROM eclipse-temurin:21-jre-alpine
-
-WORKDIR /app
-
-COPY --from=build /app/target/*.jar myapp.jar
+ENV MYAPP_HOME=/opt/myapp
+WORKDIR $MYAPP_HOME
+COPY --from=myapp-build $MYAPP_HOME/target/*.jar $MYAPP_HOME/myapp.jar
 
 EXPOSE 8080
 
