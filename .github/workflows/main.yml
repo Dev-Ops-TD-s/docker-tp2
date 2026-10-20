@@ -19,6 +19,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Validate Docker Compose
+        run: docker compose config --quiet -f docker-compose.yaml
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
