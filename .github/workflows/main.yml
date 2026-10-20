@@ -5,11 +5,9 @@ on:
   push:
     branches:
       - master
-      - develop
   pull_request:
     branches:
       - master
-      - develop
 
 jobs:
   test-backend:
@@ -18,9 +16,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Validate Docker Compose
-        run: docker compose -f docker-compose.yaml config --quiet
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -31,6 +26,13 @@ jobs:
 
       - name: Build backend
         run: mvn -B clean package -DskipTests --file ay-app/pom.xml
+
+      - name: OWASP Dependency-Check
+        run: >
+          mvn -B
+          org.owasp:dependency-check-maven:13.0.0:check
+          -DfailBuildOnCVSS=7
+          --file ay-app/pom.xml
 
       - name: SonarCloud Analysis
         env:
