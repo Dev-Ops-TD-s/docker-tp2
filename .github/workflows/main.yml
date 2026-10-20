@@ -28,9 +28,12 @@ jobs:
         run: mvn -B clean package -DskipTests --file ay-app/pom.xml
 
       - name: OWASP Dependency-Check
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: >
           mvn -B
           org.owasp:dependency-check-maven:13.0.0:check
+          -DnvdApiKey="$NVD_API_KEY"
           -DfailBuildOnCVSS=7
           --file ay-app/pom.xml
 

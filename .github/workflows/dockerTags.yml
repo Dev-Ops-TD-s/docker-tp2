@@ -34,6 +34,6 @@ jobs:
         with:
           context: ./ay-app
           push: true
-          tags:
+          tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/my-backend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/my-backend:${{ github.event.workflow_run.head_sha }}
